@@ -22,8 +22,8 @@ import {
   Upload,
   X,
 } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import type { ChangeEvent, FormEvent } from 'react'
+import { Component, useEffect, useMemo, useRef, useState } from 'react'
+import type { ChangeEvent, ErrorInfo, FormEvent, ReactNode } from 'react'
 import './App.css'
 
 const STORAGE_KEY = 'life-board:data:v2'
@@ -100,11 +100,27 @@ function addDays(base: Date, amount: number) {
 }
 
 function formatShortDate(key: string) {
+  const date = new Date(`${key}T00:00:00`)
+
+  if (!key || Number.isNaN(date.getTime())) {
+    return '未设置'
+  }
+
   return new Intl.DateTimeFormat('zh-CN', {
     month: 'numeric',
     day: 'numeric',
     weekday: 'short',
-  }).format(new Date(`${key}T00:00:00`))
+  }).format(date)
+}
+
+function formatSavedDate(value: string) {
+  const date = new Date(value)
+
+  if (!value || Number.isNaN(date.getTime())) {
+    return '未保存'
+  }
+
+  return date.toLocaleDateString('zh-CN')
 }
 
 function makeId(prefix: string) {
@@ -160,6 +176,44 @@ function readStoredData(): BoardData {
     }
   } catch {
     return createEmptyData()
+  }
+}
+
+class AppErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('LifeBoard render failed', error, info)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main className="error-shell">
+          <section className="error-panel">
+            <p className="eyebrow">LifeBoard</p>
+            <h1>数据载入遇到问题</h1>
+            <p>可以先清空这个浏览器里的本地数据，再重新打开应用。</p>
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => {
+                localStorage.removeItem(STORAGE_KEY)
+                window.location.reload()
+              }}
+            >
+              清空本地数据并刷新
+            </button>
+          </section>
+        </main>
+      )
+    }
+
+    return this.props.children
   }
 }
 
@@ -1223,7 +1277,7 @@ function App() {
                             </div>
                             <p>{note.body || '空笔记'}</p>
                             <div className="note-actions">
-                              <span>{new Date(note.updatedAt).toLocaleDateString('zh-CN')}</span>
+                              <span>{formatSavedDate(note.updatedAt)}</span>
                               <div className="row-actions">
                                 <button
                                   type="button"
@@ -1262,4 +1316,12 @@ function App() {
   )
 }
 
-export default App
+function RootApp() {
+  return (
+    <AppErrorBoundary>
+      <App />
+    </AppErrorBoundary>
+  )
+}
+
+export default RootApp
