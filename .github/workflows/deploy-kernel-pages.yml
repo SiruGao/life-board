@@ -24,9 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Test
-        run: node --check app.js && node --check sw.js && node tests/smoke.mjs
-      - name: Prepare
-        run: mkdir dist && cp index.html app.js styles.css icon.svg manifest.webmanifest sw.js dist/
+        run: npm test
+      - name: Build
+        run: npm run build
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload
