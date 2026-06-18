@@ -1,4 +1,5 @@
 const DATA_KEY = 'socratic-kernel:data:v2'
+const LEGACY_KEY = 'kernel:socratic:v1'
 const ONBOARDING_KEY = 'socratic-kernel:onboarding:v1'
 const PENDING_EXAMPLE_KEY = 'socratic-kernel:pending-example'
 
@@ -40,7 +41,8 @@ const EXAMPLES = {
 
 function readSessions() {
   try {
-    const parsed = JSON.parse(localStorage.getItem(DATA_KEY) || '{"sessions":[]}')
+    const raw = localStorage.getItem(DATA_KEY) || localStorage.getItem(LEGACY_KEY)
+    const parsed = JSON.parse(raw || '{"sessions":[]}')
     return Array.isArray(parsed.sessions) ? parsed.sessions : []
   } catch {
     return []
