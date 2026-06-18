@@ -284,6 +284,7 @@ function enginePanel() {
 }
 
 function enhanceNewForm() {
+  if (catalog.status === 'loading') return
   const form = document.querySelector('#new-form')
   if (!form || form.dataset.aiEnhanced === 'true') return
   form.dataset.aiEnhanced = 'true'
