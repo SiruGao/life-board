@@ -10,6 +10,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>Socratic Kernel · 内核</title>
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./ai.css" />
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -25,6 +26,7 @@
         <button class="nav-link active" data-route="home">今日</button>
         <button class="nav-link" data-route="new">开始审议</button>
         <button class="nav-link" data-route="history">思考档案</button>
+        <button class="nav-link" data-route="models">模型</button>
         <button class="nav-link" data-route="data">数据</button>
       </nav>
       <div class="top-actions">
@@ -37,10 +39,11 @@
 
     <footer class="footer">
       <p>它不替你决定，只帮助你看见前提、反例、价值冲突与责任。</p>
-      <p>默认本地保存 · 可导出 · 可删除</p>
+      <p>默认本地保存 · AI 可选 · 可导出 · 可删除</p>
     </footer>
 
     <script type="module" src="./app.js"></script>
     <script type="module" src="./onboarding.js"></script>
+    <script type="module" src="./ai.js"></script>
   </body>
 </html>
