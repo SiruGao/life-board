@@ -1,0 +1,76 @@
+name: Bug report
+about: Report a reproducible defect in Socratic Kernel
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助改进 Socratic Kernel。请不要在公开 Issue 中提交真实隐私数据或可利用的安全漏洞；安全问题请阅读 SECURITY.md。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题概述
+      description: 实际发生了什么？
+      placeholder: 例如：完成审议后刷新页面，最新记录没有显示在思考档案中。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请提供最小、明确的复现流程。
+      placeholder: |
+        1. 打开……
+        2. 输入……
+        3. 点击……
+        4. 观察到……
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响区域
+      options:
+        - 创建审议
+        - 逐题追问
+        - 最终判断与复盘
+        - 思考档案
+        - 导入与导出
+        - PWA / 离线
+        - 响应式界面
+        - 部署与构建
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: 浏览器与版本
+      placeholder: Chrome 126 / Safari 18 / Firefox 128
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: macOS / Windows / iOS / Android / Linux
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截图、控制台信息或补充材料
+      description: 请先移除真实问题内容、姓名和其他敏感信息。
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issue，未发现相同问题。
+          required: true
+        - label: 我没有在此 Issue 中公开真实隐私数据或安全漏洞细节。
+          required: true
