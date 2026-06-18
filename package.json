@@ -2,6 +2,26 @@
   "name": "socratic-kernel",
   "version": "0.2.0",
   "private": true,
+  "description": "A local-first cognitive autonomy practice tool that asks users to form a position before receiving structured Socratic inquiry.",
+  "homepage": "https://sirugao.github.io/socratic-kernel/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SiruGao/socratic-kernel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SiruGao/socratic-kernel/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "socratic-method",
+    "critical-thinking",
+    "cognitive-autonomy",
+    "local-first",
+    "pwa",
+    "ai-literacy",
+    "anti-sycophancy",
+    "privacy"
+  ],
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
