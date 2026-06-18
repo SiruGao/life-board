@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Socratic Kernel（内核）：一个不替你做决定的认知自主权练习工具。" />
-    <meta name="theme-color" content="#171915" />
+    <meta name="description" content="Socratic Kernel（内核）：一个不替你做决定的认知自主权练习应用。" />
+    <meta name="theme-color" content="#0c0c0b" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="manifest" href="./manifest.webmanifest" />
@@ -13,37 +13,46 @@
     <link rel="stylesheet" href="./ai.css" />
   </head>
   <body>
+    <a class="skip-link" href="#app">跳到主要内容</a>
     <div class="grain" aria-hidden="true"></div>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
     <header class="topbar">
       <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-mark">核</span>
-        <span>
-          <strong>内核</strong>
-          <small>Socratic Kernel</small>
+        <span class="brand-mark" aria-hidden="true"><i></i><b>核</b></span>
+        <span class="brand-copy">
+          <strong>Socratic Kernel</strong>
+          <small>内核 · 判断自主练习</small>
         </span>
       </a>
+
       <nav class="nav" aria-label="主导航">
-        <button class="nav-link active" data-route="home">今日</button>
-        <button class="nav-link" data-route="new">开始审议</button>
-        <button class="nav-link" data-route="history">思考档案</button>
-        <button class="nav-link" data-route="models">模型</button>
-        <button class="nav-link" data-route="data">数据</button>
+        <button class="nav-link active" data-route="home"><span>01</span>今日</button>
+        <button class="nav-link" data-route="new"><span>02</span>开始审议</button>
+        <button class="nav-link" data-route="history"><span>03</span>思考档案</button>
+        <button class="nav-link" data-route="models"><span>04</span>模型</button>
+        <button class="nav-link" data-route="data"><span>05</span>数据</button>
       </nav>
+
       <div class="top-actions">
-        <button class="ghost compact install-button" id="install-button" hidden>安装应用</button>
-        <button class="ghost compact" id="new-session-button">＋ 新审议</button>
+        <span class="privacy-signal"><i aria-hidden="true"></i>Local / Private</span>
+        <button class="ghost compact install-button" id="install-button" hidden>安装</button>
+        <button class="header-cta" id="new-session-button"><span>新审议</span><b aria-hidden="true">↗</b></button>
       </div>
     </header>
 
     <main id="app" tabindex="-1"></main>
 
     <footer class="footer">
+      <div class="footer-mark" aria-hidden="true">SK—01</div>
       <p>它不替你决定，只帮助你看见前提、反例、价值冲突与责任。</p>
-      <p>默认本地保存 · AI 可选 · 可导出 · 可删除</p>
+      <p>Local-first · AI optional · Human accountable</p>
     </footer>
 
     <script type="module" src="./app.js"></script>
     <script type="module" src="./onboarding.js"></script>
     <script type="module" src="./ai.js"></script>
+    <script type="module" src="./visual.js"></script>
   </body>
 </html>

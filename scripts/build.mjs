@@ -5,6 +5,7 @@ const files = [
   'app.js',
   'onboarding.js',
   'ai.js',
+  'visual.js',
   'styles.css',
   'ai.css',
   'icon.svg',
