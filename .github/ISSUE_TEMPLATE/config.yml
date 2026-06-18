@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/SiruGao/socratic-kernel/security/advisories/new
+    about: Privately report a security or privacy vulnerability.
+  - name: Product principles
+    url: https://github.com/SiruGao/socratic-kernel/blob/main/docs/PRODUCT.md
+    about: Read the product boundaries before proposing a major feature.
+  - name: Roadmap
+    url: https://github.com/SiruGao/socratic-kernel/blob/main/docs/ROADMAP.md
+    about: Check whether an idea is already planned.
