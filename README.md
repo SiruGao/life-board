@@ -9,7 +9,13 @@
   <p>先写下自己的立场，再审查前提、证据、反方、价值与责任。</p>
 
   <p>
-    <a href="https://sirugao.github.io/socratic-kernel/"><strong>体验本地版</strong></a>
+    <a href="https://sirugao.github.io/socratic-kernel/"><img src="https://img.shields.io/badge/打开在线应用-Launch%20App-214732?style=for-the-badge" alt="Launch Socratic Kernel" /></a>
+  </p>
+
+  <p><code>https://sirugao.github.io/socratic-kernel/</code></p>
+
+  <p>
+    <a href="./docs/DEPLOYMENT.md">部署与链接设置</a>
     ·
     <a href="./docs/AI_GATEWAY.md">接入大模型</a>
     ·
@@ -126,7 +132,7 @@ flowchart LR
 
 访问：**[sirugao.github.io/socratic-kernel](https://sirugao.github.io/socratic-kernel/)**
 
-GitHub Pages 版本提供完整本地规则、档案和 PWA 能力，但不托管服务端模型密钥。
+GitHub Pages 版本提供完整本地规则、档案和 PWA 能力，但不托管服务端模型密钥。第一次启用或看不到网站入口时，请按照 [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md) 设置 Pages 发布源和仓库 Website 字段。
 
 ### 本地规则模式
 
@@ -196,6 +202,7 @@ npm run build
 | --- | --- |
 | [`PRODUCT.md`](./docs/PRODUCT.md) | 产品使命、不可妥协原则与边界 |
 | [`ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | 当前架构和未来分层架构 |
+| [`DEPLOYMENT.md`](./docs/DEPLOYMENT.md) | GitHub Pages 启用、在线链接和故障排查 |
 | [`AI_GATEWAY.md`](./docs/AI_GATEWAY.md) | 七家模型供应商、Vercel 和安全配置 |
 | [`APP_ARCHITECTURE.md`](./docs/APP_ARCHITECTURE.md) | Web、桌面、iOS 和 Android 共享路线 |
 | [`GROWTH.md`](./docs/GROWTH.md) | 订阅、留存和公开发布策略 |
