@@ -28,7 +28,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --check app.js && node --check onboarding.js && node --check ai.js && node --check visual.js && node --check interactions.js && node --check sw.js && node --check lib/ai-gateway.js && node --check lib/http.js && node --check api/providers.js && node --check api/inquiry.js && node tests/smoke.mjs && node tests/ai-gateway.mjs"
+    "test": "node --check app.js && node --check onboarding.js && node --check ai.js && node --check visual.js && node --check interactions.js && node --check sw.js && node --check lib/ai-gateway.js && node --check lib/http.js && node --check api/providers.js && node --check api/inquiry.js && node tests/smoke.mjs && node tests/motion.mjs && node tests/ai-gateway.mjs"
   },
   "engines": {
     "node": ">=20"
