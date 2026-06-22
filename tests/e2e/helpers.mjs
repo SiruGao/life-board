@@ -9,9 +9,18 @@ export async function createBrowserPage(viewport = { width: 1440, height: 1000 }
   const page = await context.newPage()
   const errors = []
 
-  page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`))
+  page.setDefaultTimeout(12000)
+
+  page.on('pageerror', (error) => {
+    const text = `pageerror: ${error.message}`
+    errors.push(text)
+    console.error(text)
+  })
   page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(`console: ${message.text()}`)
+    if (message.type() !== 'error') return
+    const text = `console: ${message.text()}`
+    errors.push(text)
+    console.error(text)
   })
 
   await page.route('**/api/providers', (route) => route.fulfill({
