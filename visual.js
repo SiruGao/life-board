@@ -93,7 +93,7 @@ function enhanceInnerPage() {
 }
 
 function updateRouteState() {
-  document.body.dataset.route = currentRoute()
+  document.body.dataset.currentRoute = currentRoute()
   if (currentRoute() === 'home') enhanceHome()
   else enhanceInnerPage()
 }
