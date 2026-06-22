@@ -1,4 +1,4 @@
-const CACHE = 'socratic-kernel-v6-1'
+const CACHE = 'socratic-kernel-v6-2'
 const ASSETS = [
   './',
   './index.html',
@@ -33,19 +33,28 @@ self.addEventListener('activate', (event) => {
   self.clients.claim()
 })
 
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE)
+  try {
+    const response = await fetch(request)
+    if (response && response.status === 200 && response.type !== 'opaque') {
+      await cache.put(request, response.clone())
+    }
+    return response
+  } catch {
+    const cached = await cache.match(request)
+    if (cached) return cached
+    if (request.mode === 'navigate') {
+      return (await cache.match('./index.html')) || cache.match('./')
+    }
+    throw new Error('OFFLINE_ASSET_NOT_CACHED')
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return
-  if (new URL(event.request.url).pathname.startsWith('/api/')) return
-  event.respondWith(
-    caches.match(event.request).then(
-      (cached) =>
-        cached ||
-        fetch(event.request).then((response) => {
-          if (!response || response.status !== 200 || response.type === 'opaque') return response
-          const copy = response.clone()
-          caches.open(CACHE).then((cache) => cache.put(event.request, copy))
-          return response
-        }),
-    ),
-  )
+  const url = new URL(event.request.url)
+  if (url.pathname.startsWith('/api/')) return
+  if (url.origin !== self.location.origin) return
+  event.respondWith(networkFirst(event.request))
 })
