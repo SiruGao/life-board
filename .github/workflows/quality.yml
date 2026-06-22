@@ -16,6 +16,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,7 +24,55 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Test
+      - name: Static tests
         run: npm test
       - name: Build
         run: npm run build
+      - name: Install Chromium test runner
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Start test server
+        run: |
+          nohup python3 -m http.server 4173 --directory dist > /tmp/socratic-server.log 2>&1 &
+          echo $! > /tmp/socratic-server.pid
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/socratic-server.log
+          exit 1
+      - name: Browser test — navigation
+        run: |
+          set -o pipefail
+          node tests/e2e/navigation.mjs 2>&1 | tee /tmp/e2e-navigation.log
+      - name: Browser test — model center
+        if: always()
+        run: |
+          set -o pipefail
+          node tests/e2e/models.mjs 2>&1 | tee /tmp/e2e-models.log
+      - name: Browser test — inquiry and results
+        if: always()
+        run: |
+          set -o pipefail
+          node tests/e2e/session.mjs 2>&1 | tee /tmp/e2e-session.log
+      - name: Browser test — data and mobile
+        if: always()
+        run: |
+          set -o pipefail
+          node tests/e2e/data-mobile.mjs 2>&1 | tee /tmp/e2e-data-mobile.log
+      - name: Upload browser logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-test-logs
+          path: |
+            /tmp/e2e-*.log
+            /tmp/socratic-server.log
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Stop test server
+        if: always()
+        run: kill $(cat /tmp/socratic-server.pid) || true

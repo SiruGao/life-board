@@ -1,6 +1,5 @@
 const appRoot = document.querySelector('#app')
 const documentRoot = document.documentElement
-const progressBar = document.querySelector('.scroll-progress i')
 const motionQuery = matchMedia('(prefers-reduced-motion: reduce)')
 const finePointerQuery = matchMedia('(pointer: fine)')
 
@@ -23,6 +22,7 @@ const revealSelector = [
 
 const tiltSelector = '.card, .metric, .example-card, .method-strip article'
 const magneticSelector = '.primary:not(:disabled), .header-cta:not(:disabled), .text-link:not(:disabled)'
+const interactiveSelector = 'button, a, input, textarea, select, summary, [role="button"]'
 
 let revealObserver
 let lastRouteRoot = null
@@ -146,28 +146,34 @@ function enhanceReveals(root = appRoot) {
 function enhanceMagnetic(element) {
   if (element.dataset.magneticEnhanced === 'true') return
   element.dataset.magneticEnhanced = 'true'
-  element.classList.add('is-magnetic')
 
   element.addEventListener('pointermove', (event) => {
     if (!fineMotionEnabled()) return
     const rect = element.getBoundingClientRect()
-    const x = (event.clientX - rect.left - rect.width / 2) * 0.14
-    const y = (event.clientY - rect.top - rect.height / 2) * 0.18
-    element.style.setProperty('--mag-x', `${clamp(x, -8, 8)}px`)
-    element.style.setProperty('--mag-y', `${clamp(y, -6, 6)}px`)
+    const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100)
+    const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100)
+    element.style.backgroundImage = `radial-gradient(circle at ${x.toFixed(1)}% ${y.toFixed(1)}%, rgba(255,255,255,0.2), transparent 44%)`
   })
 
   element.addEventListener('pointerleave', () => {
-    element.style.setProperty('--mag-x', '0px')
-    element.style.setProperty('--mag-y', '0px')
+    element.style.removeProperty('background-image')
   })
+}
+
+function canTilt(element) {
+  if (element.matches(interactiveSelector)) return false
+  return !element.querySelector(interactiveSelector)
 }
 
 function enhanceTilt(element) {
   if (element.dataset.tiltEnhanced === 'true') return
   element.dataset.tiltEnhanced = 'true'
-  element.classList.add('tilt-surface')
+  if (!canTilt(element)) {
+    element.classList.add('tilt-disabled')
+    return
+  }
 
+  element.classList.add('tilt-surface')
   element.addEventListener('pointermove', (event) => {
     if (!fineMotionEnabled()) return
     const rect = element.getBoundingClientRect()
