@@ -1,6 +1,37 @@
 import assert from 'node:assert/strict'
 import { createBrowserPage, reset, expectRoute, assertNoErrors } from './helpers.mjs'
 
+async function assertNoHorizontalOverflow(page, label) {
+  const report = await page.evaluate(() => {
+    const width = innerWidth
+    const offenders = [...document.querySelectorAll('body *')]
+      .map((element) => {
+        const rect = element.getBoundingClientRect()
+        return {
+          tag: element.tagName,
+          className: typeof element.className === 'string' ? element.className : '',
+          id: element.id || '',
+          left: Math.round(rect.left),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+          scrollWidth: element.scrollWidth,
+          text: String(element.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 90),
+        }
+      })
+      .filter((item) => item.right > width + 1 || item.left < -1 || item.scrollWidth > item.width + 2)
+      .slice(0, 20)
+    return {
+      viewport: width,
+      documentWidth: document.documentElement.scrollWidth,
+      offenders,
+    }
+  })
+  if (report.documentWidth > report.viewport + 1) {
+    console.error(`MOBILE_OVERFLOW ${label} ${JSON.stringify(report)}`)
+  }
+  assert.ok(report.documentWidth <= report.viewport + 1, `${label} has horizontal overflow`)
+}
+
 const desktop = await createBrowserPage()
 try {
   await reset(desktop.page, '#data')
@@ -33,11 +64,11 @@ try {
   await reset(mobile.page)
   await mobile.page.getByRole('button', { name: '开始一次审议', exact: true }).click()
   await expectRoute(mobile.page, '#new', '#new-form')
-  assert.ok(await mobile.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+  await assertNoHorizontalOverflow(mobile.page, 'new')
 
   await mobile.page.locator('.nav [data-route="models"]').click()
   await expectRoute(mobile.page, '#models', '#ai-settings-form')
-  assert.ok(await mobile.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+  await assertNoHorizontalOverflow(mobile.page, 'models')
 
   await mobile.page.locator('.nav [data-route="new"]').click()
   await expectRoute(mobile.page, '#new', '#new-form')
