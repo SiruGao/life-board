@@ -146,20 +146,17 @@ function enhanceReveals(root = appRoot) {
 function enhanceMagnetic(element) {
   if (element.dataset.magneticEnhanced === 'true') return
   element.dataset.magneticEnhanced = 'true'
-  element.classList.add('is-magnetic', 'is-magnetic-safe')
 
   element.addEventListener('pointermove', (event) => {
     if (!fineMotionEnabled()) return
     const rect = element.getBoundingClientRect()
     const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100)
     const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100)
-    element.style.setProperty('--mag-light-x', `${x.toFixed(1)}%`)
-    element.style.setProperty('--mag-light-y', `${y.toFixed(1)}%`)
+    element.style.backgroundImage = `radial-gradient(circle at ${x.toFixed(1)}% ${y.toFixed(1)}%, rgba(255,255,255,0.2), transparent 44%)`
   })
 
   element.addEventListener('pointerleave', () => {
-    element.style.setProperty('--mag-light-x', '50%')
-    element.style.setProperty('--mag-light-y', '50%')
+    element.style.removeProperty('background-image')
   })
 }
 
